@@ -5,14 +5,14 @@ SUBDIRS = src
 DISTCHECK_CONFIGURE_FLAGS = \
 	VMOD_DIR='$${libdir}/varnish/vmods'
 
-EXTRA_DIST = README.rst LICENSE vmod-libvmod-rtfrontend.spec debian
+EXTRA_DIST = README.rst LICENSE vmod-rtfrontend.spec debian
 
 doc_DATA = README.rst LICENSE
 
-dist_man_MANS = vmod_libvmod-rtfrontend.3
+dist_man_MANS = vmod_rtfrontend.3
 MAINTAINERCLEANFILES = $(dist_man_MANS)
 
-vmod_libvmod-rtfrontend.3: README.rst
+vmod_rtfrontend.3: README.rst
 
 %.1 %.2 %.3 %.4 %.5 %.6 %.7 %.8 %.9:
 if HAVE_RST2MAN

@@ -1,4 +1,4 @@
-varnishtest "Test libvmod-rtfrontend vmod"
+varnishtest "Test rtfrontend vmod"
 
 server s1 {
        rxreq
@@ -6,10 +6,10 @@ server s1 {
 } -start
 
 varnish v1 -vcl+backend {
-	import libvmod-rtfrontend from "${vmod_topbuild}/src/.libs/libvmod_libvmod-rtfrontend.so";
+	import rtfrontend from "${vmod_topbuild}/src/.libs/libvmod_rtfrontend.so";
 
 	sub vcl_deliver {
-		set resp.http.hello = libvmod-rtfrontend.hello("World");
+		set resp.http.hello = rtfrontend.hello("World");
 	}
 } -start
 

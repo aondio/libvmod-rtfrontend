@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Script to rename libvmod-libvmod-rtfrontend into libvmod-foo.
+# Script to rename libvmod-rtfrontend into libvmod-foo.
 # (where "foo" is your new vmod name, of course.)
 #
 # Leaves the changes uncommitted in the working tree, so you get to fix any
@@ -13,7 +13,7 @@ set -o errexit
 NAME=$1
 if [ -z "$NAME" ]; then
 	echo "Usage: $0 <new-vmod-name-without-libvmod-prefix>"
-	echo "Rename libvmod-libvmod-rtfrontend source tree."
+	echo "Rename libvmod-rtfrontend source tree."
 	echo
 	exit -1
 fi
@@ -23,15 +23,15 @@ if ! git diff-index --quiet HEAD --; then
 	exit -2
 fi
 
-git mv src/vmod_libvmod-rtfrontend.c src/vmod_${NAME}.c
-git mv src/vmod_libvmod-rtfrontend.vcc src/vmod_${NAME}.vcc
-git mv vmod-libvmod-rtfrontend.spec vmod-${NAME}.spec
+git mv src/vmod_rtfrontend.c src/vmod_${NAME}.c
+git mv src/vmod_rtfrontend.vcc src/vmod_${NAME}.vcc
+git mv vmod-rtfrontend.spec vmod-${NAME}.spec
 
-git grep -z -l libvmod-rtfrontend | xargs -0 sed -i -s -e "s/libvmod-rtfrontend/${NAME}/g"
+git grep -z -l rtfrontend | xargs -0 sed -i -s -e "s/rtfrontend/${NAME}/g"
 
 git rm rename-vmod-script
 
 echo "All done."
-echo -e "For your cut&paste needs:\n  git commit -a -m \"Automatic rename of libvmod-libvmod-rtfrontend to libvmod-${NAME}.\""
+echo -e "For your cut&paste needs:\n  git commit -a -m \"Automatic rename of libvmod-rtfrontend to libvmod-${NAME}.\""
 
 
