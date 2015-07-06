@@ -1,33 +1,23 @@
-#include <stdio.h>
 #include <stdlib.h>
 
-#include "vrt.h"
 #include "cache/cache.h"
-
-#include "vcc_if.h"
-
-int
-init_function(struct vmod_priv *priv, const struct VCL_conf *conf)
-{
-	return (0);
-}
+#include "vmod_html.h"
+#include "vrt.h"
 
 VCL_STRING
-vmod_hello(const struct vrt_ctx *ctx, VCL_STRING name)
+vmod_html(const struct vrt_ctx *ctx)
 {
-	char *p;
-	unsigned u, v;
-
-	u = WS_Reserve(ctx->ws, 0); /* Reserve some work space */
-	p = ctx->ws->f;		/* Front of workspace area */
-	v = snprintf(p, u, "Hello, %s", name);
-	v++;
-	if (v > u) {
-		/* No space, reset and leave */
-		WS_Release(ctx->ws, 0);
-		return (NULL);
+	struct vsb *vsb;
+	unsigned u;
+	u = WS_Reserve(ctx->ws, 0);
+	vsb = VSB_new(NULL, ctx->ws->f, u, VSB_AUTOEXTEND);
+	VSB_cat(vsb, html);
+	VSB_finish(vsb);
+	if (VSB_error(vsb)) {
+	    VSLb(ctx->vsl, SLT_VCL_Error, "VSB error");
+	    WS_Release(ctx->ws, VSB_len(vsb) + 1);
+	    return "{}";
 	}
-	/* Update work space with what we've used */
-	WS_Release(ctx->ws, v);
-	return (p);
+	WS_Release(ctx->ws, VSB_len(vsb) + 1);
+	return (vsb->s_buf);
 }
